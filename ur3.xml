@@ -1,0 +1,100 @@
+<mujoco model="ur3">
+    <compiler inertiafromgeom='true' angle="radian" settotalmass="25.5" meshdir="stl/" />
+    <option timestep="0.002" gravity="0 0 -9.81"/>
+    <size njmax="500" nconmax="100" />
+
+    <asset>
+        <mesh name="base" file="base.stl" />
+
+        <mesh name="shoulder_1" file="shoulder_1.stl" />
+        <mesh name="shoulder_2" file="shoulder_2.stl" />
+
+        <mesh name="upperarm_1" file="uperarm_1.stl" />
+        <mesh name="upperarm_2" file="uperarm_2.stl" />
+        <mesh name="upperarm_3" file="uperarm_3.stl" />
+        <mesh name="upperarm_4" file="uperarm_4.stl" />
+        <mesh name="upperarm_5" file="uperarm_5.stl" />
+
+        <mesh name="forearm_1" file="forearm_1.stl" />
+        <mesh name="forearm_2" file="forearm_2.stl" />
+        <mesh name="forearm_3" file="forearm_3.stl" />
+        <mesh name="forearm_4" file="forearm_4.stl" />
+
+        <mesh name="wrist1_1" file="wrist1_1.stl" />
+        <mesh name="wrist1_2" file="wrist1_2.stl" />
+
+        <mesh name="wrist2_1" file="wrist2_1.stl" />
+        <mesh name="wrist2_2" file="wrist2_2.stl" />
+
+
+        <mesh name="wrist3" file="wrist3.stl" />
+
+        <texture type="skybox" builtin="gradient" rgb1=".2 .3 .4" rgb2="1 1 1" width="100" height="100"/>
+
+        <material name="silver" rgba="1 1 1 1" reflectance="0"/>
+        <material name="blue" rgba="#59ABD2"/>
+        <material name="grey" rgba="0.7 0.7 0.7 1" />
+    </asset>
+    <worldbody>
+        <geom type="plane"  size="1 1 0.1" rgba ="0.1 0.9 0.2 0.5"/>
+
+        <body name="base_link" pos="0 0 0">
+            <geom type="mesh" material="silver" mesh="base" />
+            <body name="shoulder_link" pos="0 0 0.1519">
+            
+                <joint name="shoulder_pan_joint" pos="0 0 0" axis="0 0 1" limited="true" range="-6.28319 6.28319" />
+                <geom type="mesh" material="blue" mesh="shoulder_2" />
+                <geom type="mesh" material="grey" mesh="shoulder_1" />
+                <body name="upper_arm_link" pos="0 0.1198 0" quat="0.707107 0 0.707107 0">
+                    
+                    <joint name="shoulder_lift_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-6.28319 6.28319" />
+                    <geom type="mesh" material="grey" mesh="upperarm_1" />
+                    <geom type="mesh" material="blue" mesh="upperarm_2" />
+                    <geom type="mesh" material="silver" mesh="upperarm_3" />
+                    <geom type="mesh" material="blue" mesh="upperarm_4" />
+                    <geom type="mesh" material="grey" mesh="upperarm_5" />
+                    <body name="forearm_link" pos="0 -0.0925 0.24365">
+                        
+                        <joint name="elbow_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-3.14159 3.14159" />
+                        <geom type="mesh" material="grey" mesh="forearm_1" />
+                        <geom type="mesh" material="silver" mesh="forearm_2" />
+                        <geom type="mesh" material="blue" mesh="forearm_3" />
+                        <geom type="mesh" material="grey" mesh="forearm_4" />
+                        <body name="wrist_1_link" pos="0 0 0.21325" quat="0.707107 0 0.707107 0">
+                            
+                            <joint name="wrist_1_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-6.28319 6.28319" />
+                            <geom type="mesh" material="blue" mesh="wrist1_1" />
+                            <geom type="mesh" material="grey" mesh="wrist1_2" />
+                            <body name="wrist_2_link" pos="0 0.08505 0">
+                                
+                                <joint name="wrist_2_joint" pos="0 0 0" axis="0 0 1" limited="true" range="-6.28319 6.28319" />
+                                <geom type="mesh" material="blue" mesh="wrist2_1" />
+                                <geom type="mesh" material="grey" mesh="wrist2_2" />
+                                <body name="wrist_3_link" pos="0 0 0.08535">
+                                    
+                                    <joint name="wrist_3_joint" pos="0 0 0" axis="0 1 0" limited="true" range="-6.28319 6.28319" />
+                                    <geom type="mesh" material="silver" mesh="wrist3" />
+                                    <body name="ee_link" pos="0 0.0819 0" quat="0.707107 0 0 0.707107">
+
+                                        <geom size="0.005 0.005 0.005" pos="-0.01 0 0" type="box" />
+                                    </body>
+
+                                </body>
+                            </body>
+                        </body>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <actuator>        
+        <motor ctrlrange="-2 2" ctrllimited="true" name="joint0_motor" joint="shoulder_pan_joint"/>
+        <motor ctrlrange="-2 2" ctrllimited="true" name="joint1_motor" joint="shoulder_lift_joint"/>
+        <motor ctrlrange="-2 2" ctrllimited="true" name="joint2_motor" joint="elbow_joint"/>
+        <motor ctrlrange="-2 2" ctrllimited="true" name="joint3_motor" joint="wrist_1_joint"/>
+        <motor ctrlrange="-2 2" ctrllimited="true" name="joint4_motor" joint="wrist_2_joint"/>
+        <motor ctrlrange="-1 1" ctrllimited="true" name="joint5_motor" joint="wrist_3_joint"/>
+    </actuator>
+
+</mujoco>
